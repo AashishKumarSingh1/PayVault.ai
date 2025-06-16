@@ -77,7 +77,7 @@ function Sidebar() {
           {sidebarItems.map((item) => (
             <li key={item.name}>
               <Link
-                href={`${item.name == "Dashboard" ? "":`/dashboard${item.path}`}`}
+                href={`${item.name == "Dashboard" ? "/":`/dashboard${item.path}`}`}
                 className={`flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors ${
                   sidebarCollapsed ? "justify-center" : ""
                 }`}
