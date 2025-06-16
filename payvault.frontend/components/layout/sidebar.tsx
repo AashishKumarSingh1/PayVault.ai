@@ -16,7 +16,7 @@ const sidebarItems = [
   { name: "Past Transactions", path: "/past-transactions", icon: History },
   { name: "Insights", path: "/insights", icon: BarChart2 },
   { name: "Bills", path: "/bills", icon: File },
-  { name: "Expiring Bills", path: "/expiring-bills", icon: Clock },
+  { name: "Upcoming Bills", path: "/expiring-bills", icon: Clock },
 ];
 
 function Sidebar() {

@@ -1,103 +1,318 @@
-import Image from "next/image";
+"use client";
+import React from "react";
+import {
+  Utensils,
+  Wifi,
+  ShoppingBag,
+  FileText,
+  Home,
+  Calendar,
+  Smartphone,
+  Music,
+  Film,
+  Car,
+} from "lucide-react";
+import Charts from "../components/ui/charts";
+import RecentTransactions from "@/components/ui/table/Recent_Transactions";
 
-export default function Home() {
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import Metrics from "../components/ui/metrics";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+// Dummy Data
+const vendors = [
+  "Swiggy",
+  "BSNL",
+  "Jio",
+  "Amazon",
+  "Zomato",
+  "Uber",
+  "Netflix",
+  "Spotify",
+];
+const categories = [
+  "Food",
+  "Bills",
+  "Shopping",
+  "Transport",
+  "Entertainment",
+  "Health",
+  "Education",
+  "Others",
+];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+
+const vendorSpendingData = {
+  labels: vendors,
+  datasets: [
+    {
+      label: "Amount Spent (₹)",
+      data: [4500, 1200, 800, 6500, 3200, 1800, 799, 299],
+      backgroundColor: [
+        "#FF6B6B",
+        "#4D96FF",
+        "#6BCB77",
+        "#FFD93D",
+        "#FF9F45",
+        "#845EC2",
+        "#FF6B6B",
+        "#4D96FF",
+      ],
+    },
+  ],
+};
+const categorySpendingData = {
+  labels: categories,
+  datasets: [
+    {
+      label: "Amount Spent (₹)",
+      data: [5500, 3200, 4800, 2100, 1500, 1200, 800, 500],
+      backgroundColor: [
+        "#FF6B6B",
+        "#4D96FF",
+        "#6BCB77",
+        "#FFD93D",
+        "#845EC2",
+        "#FF9F45",
+        "#4D96FF",
+        "#6BCB77",
+      ],
+    },
+  ],
+};
+const paymentStatusData = {
+  labels: ["Success", "Failed", "Pending", "Refunded"],
+  datasets: [
+    {
+      data: [85, 5, 7, 3],
+      backgroundColor: ["#6BCB77", "#FF6B6B", "#FFD93D", "#4D96FF"],
+    },
+  ],
+};
+
+const monthlyExpenditureData = {
+  labels: months,
+  datasets: [
+    {
+      label: "Expenditure (₹)",
+      data: [18000, 20000, 22000, 24000, 23000, 21000],
+      backgroundColor: [
+        "rgba(255, 107, 107, 0.8)",
+        "rgba(255, 107, 107, 0.8)",
+        "rgba(255, 107, 107, 0.8)",
+        "rgba(255, 107, 107, 0.8)",
+        "rgba(255, 107, 107, 0.8)",
+        "rgba(255, 107, 107, 0.8)",
+      ],
+      borderColor: [
+        "rgba(255, 107, 107, 1)",
+        "rgba(255, 107, 107, 1)",
+        "rgba(255, 107, 107, 1)",
+        "rgba(255, 107, 107, 1)",
+        "rgba(255, 107, 107, 1)",
+        "rgba(255, 107, 107, 1)",
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
+const recentTransactions = [
+  {
+    id: 1,
+    type: "Food",
+    vendor: "Swiggy",
+    amount: "₹450",
+    status: "Success",
+    paymentType: "UPI",
+    date: "12 May 2024",
+    icon: <Utensils className="w-4 h-4" />,
+  },
+  {
+    id: 2,
+    type: "Bills",
+    vendor: "BSNL",
+    amount: "₹799",
+    status: "Pending",
+    paymentType: "Auto-Debit",
+    date: "10 May 2024",
+    icon: <Wifi className="w-4 h-4" />,
+  },
+  {
+    id: 3,
+    type: "Subscription",
+    vendor: "Jio",
+    amount: "₹299",
+    status: "Success",
+    paymentType: "Card",
+    date: "8 May 2024",
+    icon: <Smartphone className="w-4 h-4" />,
+  },
+  {
+    id: 4,
+    type: "Shopping",
+    vendor: "Amazon",
+    amount: "₹1,299",
+    status: "Failed",
+    paymentType: "Net Banking",
+    date: "5 May 2024",
+    icon: <ShoppingBag className="w-4 h-4" />,
+  },
+  {
+    id: 5,
+    type: "Transport",
+    vendor: "Uber",
+    amount: "₹320",
+    status: "Success",
+    paymentType: "Wallet",
+    date: "3 May 2024",
+    icon: <Car className="w-4 h-4" />,
+  },
+  {
+    id: 6,
+    type: "Entertainment",
+    vendor: "Netflix",
+    amount: "₹799",
+    status: "Success",
+    paymentType: "Card",
+    date: "1 May 2024",
+    icon: <Film className="w-4 h-4" />,
+  },
+  {
+    id: 7,
+    type: "Entertainment",
+    vendor: "Spotify",
+    amount: "₹299",
+    status: "Refunded",
+    paymentType: "UPI",
+    date: "28 Apr 2024",
+    icon: <Music className="w-4 h-4" />,
+  },
+];
+
+const upcomingBills = [
+  {
+    id: 1,
+    name: "Electricity Bill",
+    dueDate: "15 May 2024",
+    amount: "₹1,200",
+    icon: <Wifi className="w-4 h-4" />,
+  },
+  {
+    id: 2,
+    name: "Rent Payment",
+    dueDate: "20 May 2024",
+    amount: "₹15,000",
+    icon: <Home className="w-4 h-4" />,
+  },
+  {
+    id: 3,
+    name: "Internet Bill",
+    dueDate: "25 May 2024",
+    amount: "₹899",
+    icon: <Wifi className="w-4 h-4" />,
+  },
+];
+
+export default function Dashboard() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="p-6 min-h-screen">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <p className="text-sm text-gray-500">
+            Welcome back! Here&#39;s your financial overview
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="flex items-center gap-4">
+          <div className="p-2 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-gray-600" />
+            <span className="text-sm text-gray-600">May 2024</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Key Metrics */}
+
+      <Metrics />
+
+      {/* Charts Section */}
+
+      <Charts
+        monthlyExpenditureData={monthlyExpenditureData}
+        paymentStatusData={paymentStatusData}
+        vendorSpendingData={vendorSpendingData}
+        categorySpendingData={categorySpendingData}
+      />
+
+      {/* Bottom Section */}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Recent Transactions */}
+
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
+          <h3 className="font-medium mb-4 flex items-center gap-2">
+            <FileText className="w-5 h-5 text-gray-600" />
+            Recent Transactions
+          </h3>
+          <div className="overflow-x-auto">
+            <RecentTransactions recentTransactions={recentTransactions} />
+          </div>
+        </div>
+
+        {/* Upcoming Bills */}
+
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+          <h3 className="font-medium mb-4 flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-red-600" />
+            Upcoming Bills
+          </h3>
+          <div className="space-y-4">
+            {upcomingBills.map((bill) => (
+              <div
+                key={bill.id}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-red-50 rounded-full">{bill.icon}</div>
+                  <div>
+                    <p className="text-sm font-medium">{bill.name}</p>
+                    <p className="text-xs text-gray-500">Due {bill.dueDate}</p>
+                  </div>
+                </div>
+                <div className="text-sm font-medium">{bill.amount}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <button className="w-full py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100">
+              View All Bills
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
