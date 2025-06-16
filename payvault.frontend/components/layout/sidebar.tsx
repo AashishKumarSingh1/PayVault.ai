@@ -14,8 +14,8 @@ const sidebarItems = [
   { name: "Dashboard", path: "", icon: LayoutDashboard },
   { name: "Sync/Add Bills", path: "/bills", icon: File },
   { name: "Payments", path: "/payments", icon: CreditCard },
-  { name: "Insights", path: "/insights", icon: BarChart2 },
-  { name: "Upcoming Bills", path: "/expiring-bills", icon: Clock },
+  { name: "Analyze Bills", path: "/analyze-bills", icon: BarChart2 },
+  { name: "Upcoming Bills", path: "/upcoming-bills", icon: Clock },
   { name: "Past Transactions", path: "/past-transactions", icon: History },
 ];
 
