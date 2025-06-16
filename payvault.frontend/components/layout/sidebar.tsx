@@ -12,11 +12,11 @@ import {
 
 const sidebarItems = [
   { name: "Dashboard", path: "", icon: LayoutDashboard },
+  { name: "Sync/Add Bills", path: "/bills", icon: File },
   { name: "Payments", path: "/payments", icon: CreditCard },
-  { name: "Past Transactions", path: "/past-transactions", icon: History },
   { name: "Insights", path: "/insights", icon: BarChart2 },
-  { name: "Bills", path: "/bills", icon: File },
   { name: "Upcoming Bills", path: "/expiring-bills", icon: Clock },
+  { name: "Past Transactions", path: "/past-transactions", icon: History },
 ];
 
 function Sidebar() {

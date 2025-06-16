@@ -1,1 +1,0 @@
-//bills component and feature of uploading from gmail and sms sync
