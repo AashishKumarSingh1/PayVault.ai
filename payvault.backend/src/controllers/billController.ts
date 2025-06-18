@@ -43,7 +43,7 @@ class BillController {
             vendor: "$vendor.name",
             amount: 1,
             dueDate: 1,
-            status: 1,
+            status: "pending",
           },
         },
       ]);
