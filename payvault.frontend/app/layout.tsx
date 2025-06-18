@@ -4,6 +4,8 @@ import "./globals.css";
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
 import { Toaster } from "react-hot-toast";
+import Script from 'next/script';
+import { OfflinePaymentHandler } from "@/components/offlinePaymentHandler";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,6 +32,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster />
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="beforeInteractive"
+        />
+        <OfflinePaymentHandler />
         <div className="flex min-h-screen">
           <Sidebar />
           <div className="flex-1 h-screen overflow-auto">
