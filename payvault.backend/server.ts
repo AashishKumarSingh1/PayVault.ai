@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import billRoute from "./src/routes/billRoute"
+import transactionRoute from "./src/routes/transactionRoute"
+import {connectDb} from "./src/utils/connectDb"
 import cors from "cors"
 dotenv.config();
 
@@ -19,7 +21,9 @@ app.get('/', (req, res) => {
 });
 
 app.use("/bills",billRoute);
+app.use("/transactions",transactionRoute);
 
 app.listen(PORT,async ()=>{
+  await connectDb();
   console.log(`Server is running on port ${PORT}`);
 })
