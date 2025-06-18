@@ -22,21 +22,20 @@ export default function AnalyzeBills() {
   };
 
   const handleQuestion = async (question: string) => {
-    if (!billImage || !question.trim()) return;
+    if (!fileInputRef.current?.files?.[0] || !question.trim() ) return;
     
     setIsProcessing(true);
     setConversation(prev => [...prev, {role: 'user', content: question}]);
     
     try {
+      const formData = new FormData();
+      formData.append("image", fileInputRef.current.files[0]);
+      formData.append("question", question);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/analyze-bill`,
+        `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT_GENAI}/analyze-bill`,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            image: billImage.split(',')[1],
-            question 
-          })
+          body:formData
         }
       );
       
@@ -47,9 +46,10 @@ export default function AnalyzeBills() {
       const data = await response.json();
       setConversation(prev => [...prev, { 
         role: 'assistant', 
-        content: data.answer || data.response 
+        content: data.answer_from_image_text || "No answer found."
       }]);
     } catch (error) {
+      console.error(error)
       setConversation(prev => [...prev, {
         role: 'assistant',
         content: "Sorry, I couldn't process that. Please ask something else."

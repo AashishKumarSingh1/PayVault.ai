@@ -3,7 +3,7 @@ from flask_cors import CORS
 from app.reader import extract_bill_data
 import logging
 from datetime import datetime
-
+from app.analyzeBills import get_extracted_text,answer_from_image_text
 app = Flask(__name__)
 CORS(app)
 
@@ -78,6 +78,30 @@ def image_reader_post():
             'details': str(e),
             'timestamp': datetime.now().isoformat()
         }), 500
+    
+@app.route("/analyze-bill",methods=["POST"])
+def analyze_bill():
+    if "image" not in request.files:
+        return jsonify({'message': 'No image uploaded'}), 400
+
+    image_blob = request.files["image"].read()
+    question = request.form.get("question")
+    try:
+        extracted_text = get_extracted_text(image_blob)
+        
+        if not extracted_text:
+            return jsonify({'message': 'No text found in the image'}), 400
+        
+        answer_from_image_text_response = answer_from_image_text(question, extracted_text)
+        
+        return jsonify({
+            'extracted_text': extracted_text,
+            'answer_from_image_text': answer_from_image_text_response
+        }), 200
+    
+    except Exception as e:
+        return jsonify({'message': f'Error processing the image: {str(e)}'}), 500
+    
 
 @app.route("/health", methods=["GET"])
 def health_check():
@@ -87,6 +111,7 @@ def health_check():
         'version': '1.0',
         'timestamp': datetime.now().isoformat()
     }), 200
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
