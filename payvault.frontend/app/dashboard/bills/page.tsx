@@ -18,6 +18,7 @@ import {
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import Link from "next/link";
 
 type Bill = {
   id: string;
@@ -611,11 +612,11 @@ const BillSyncComponent = () => {
         <div className="flex items-center justify-between mb-4 pt-6">
           <h3 className="text-lg font-medium text-gray-800 flex items-center gap-2">
             <Clock className="w-5 h-5 text-gray-500" />
-            Recent Bills
+            Recent Pending Bills
           </h3>
-          <button className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1">
-            View All <ChevronDown className="w-4 h-4" />
-          </button>
+          <Link className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1" href={"/upcoming-bills"}>
+            View All
+          </Link>
         </div>
 
         <div className="overflow-x-auto">
