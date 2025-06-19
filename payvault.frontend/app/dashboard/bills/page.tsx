@@ -20,7 +20,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import Link from "next/link";
 
-type Bill = {
+export type Bill = {
   id: string;
   billNumber?: string;
   category: string;

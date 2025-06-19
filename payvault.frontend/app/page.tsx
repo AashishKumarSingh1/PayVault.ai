@@ -1,20 +1,18 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
-  Utensils,
   Wifi,
-  ShoppingBag,
   FileText,
   Home,
   Calendar,
-  Smartphone,
-  Music,
-  Film,
-  Car,
 } from "lucide-react";
 import Charts from "../components/ui/charts";
 import RecentTransactions from "@/components/ui/table/Recent_Transactions";
-
+import axios from "axios";
+import { Transaction } from "@/components/ui/table/Recent_Transactions";
+import { useEffect } from "react";
+import {Bill} from "../app/dashboard/bills/page"
+import toast from "react-hot-toast";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,6 +26,8 @@ import {
   Legend,
 } from "chart.js";
 import Metrics from "../components/ui/metrics";
+import { getTypeIcon } from "@/utils/getTypeIcon";
+import Link from "next/link";
 
 ChartJS.register(
   CategoryScale,
@@ -139,104 +139,57 @@ const monthlyExpenditureData = {
   ],
 };
 
-const recentTransactions = [
-  {
-    id: 1,
-    type: "Food",
-    vendor: "Swiggy",
-    amount: "₹450",
-    status: "Success",
-    paymentType: "UPI",
-    date: "12 May 2024",
-    icon: <Utensils className="w-4 h-4" />,
-  },
-  {
-    id: 2,
-    type: "Bills",
-    vendor: "BSNL",
-    amount: "₹799",
-    status: "Pending",
-    paymentType: "Auto-Debit",
-    date: "10 May 2024",
-    icon: <Wifi className="w-4 h-4" />,
-  },
-  {
-    id: 3,
-    type: "Subscription",
-    vendor: "Jio",
-    amount: "₹299",
-    status: "Success",
-    paymentType: "Card",
-    date: "8 May 2024",
-    icon: <Smartphone className="w-4 h-4" />,
-  },
-  {
-    id: 4,
-    type: "Shopping",
-    vendor: "Amazon",
-    amount: "₹1,299",
-    status: "Failed",
-    paymentType: "Net Banking",
-    date: "5 May 2024",
-    icon: <ShoppingBag className="w-4 h-4" />,
-  },
-  {
-    id: 5,
-    type: "Transport",
-    vendor: "Uber",
-    amount: "₹320",
-    status: "Success",
-    paymentType: "Wallet",
-    date: "3 May 2024",
-    icon: <Car className="w-4 h-4" />,
-  },
-  {
-    id: 6,
-    type: "Entertainment",
-    vendor: "Netflix",
-    amount: "₹799",
-    status: "Success",
-    paymentType: "Card",
-    date: "1 May 2024",
-    icon: <Film className="w-4 h-4" />,
-  },
-  {
-    id: 7,
-    type: "Entertainment",
-    vendor: "Spotify",
-    amount: "₹299",
-    status: "Refunded",
-    paymentType: "UPI",
-    date: "28 Apr 2024",
-    icon: <Music className="w-4 h-4" />,
-  },
-];
-
-const upcomingBills = [
-  {
-    id: 1,
-    name: "Electricity Bill",
-    dueDate: "15 May 2024",
-    amount: "₹1,200",
-    icon: <Wifi className="w-4 h-4" />,
-  },
-  {
-    id: 2,
-    name: "Rent Payment",
-    dueDate: "20 May 2024",
-    amount: "₹15,000",
-    icon: <Home className="w-4 h-4" />,
-  },
-  {
-    id: 3,
-    name: "Internet Bill",
-    dueDate: "25 May 2024",
-    amount: "₹899",
-    icon: <Wifi className="w-4 h-4" />,
-  },
-];
-
 export default function Dashboard() {
+  const [recentTransactions,setRecentTransactions] = useState<Transaction[]>([])
+  const [upcomingBills,setRecentBills] = useState<Bill[]>([])
+
+    const fetchRecentTransactions = async (): Promise<Transaction[]> => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/payments/recent`
+      );
+
+      return response.data.map((txn: Transaction) => ({
+        id: txn.id,
+        category: txn.category,
+        vendor: txn.vendor,
+        amount: txn.amount,
+        date: txn.date,
+        status: txn.status,
+        paymentMethod: txn.paymentMethod,
+        billNumber: txn.billNumber,
+      })) as Transaction[];
+    } catch (error) {
+      console.error("Error fetching recent transactions:", error);
+      return [];
+    }
+  };
+
+    const fetchRecentBills = async () => {
+    try {
+      const response = await axios.get<Bill[]>(
+        `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/bills/recent?limit=5`
+      );
+      setRecentBills(response.data);
+    } catch (error) {
+      console.error("Error fetching recent bills:", error);
+      toast.error("Failed to fetch recent bills");
+    }
+  };
+
+    useEffect(() => {
+      fetchRecentBills();
+    }, []);
+
+    useEffect(() => {
+      const loadRecentTransactions = async () => {
+        const transactions = await fetchRecentTransactions();
+        setRecentTransactions(transactions);
+      };
+  
+      loadRecentTransactions();
+    }, []);
+
   return (
     <div className="p-6 min-h-screen">
       {/* Header */}
@@ -296,20 +249,26 @@ export default function Dashboard() {
                 className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-red-50 rounded-full">{bill.icon}</div>
+                  <div className="p-2 bg-red-50 rounded-full">{getTypeIcon(bill.category)}</div>
                   <div>
-                    <p className="text-sm font-medium">{bill.name}</p>
-                    <p className="text-xs text-gray-500">Due {bill.dueDate}</p>
+                    <p className="text-sm font-medium">{bill.category}</p>
+                    <p className="text-xs text-gray-500">Due {(new Date(bill.dueDate.split("T")[0])).toLocaleDateString(
+                      'en-GB', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    }
+                    )}</p>
                   </div>
                 </div>
-                <div className="text-sm font-medium">{bill.amount}</div>
+                <div className="text-sm font-medium">₹{bill.amount}</div>
               </div>
             ))}
           </div>
           <div className="mt-4 pt-4 border-t border-gray-200">
-            <button className="w-full py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100">
+            <Link className="w-full py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100 flex items-center justify-center" href={"/upcoming-bills"}>
               View All Bills
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -507,7 +507,7 @@ const PaymentComponent = () => {
                     className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 font-medium transition-colors shadow-sm hover:shadow-md"
                   >
                     <CreditCard className="w-5 h-5" />
-                    Pay Now with Razorpay
+                    Pay Now
                   </button>
                 </div>
               )}
@@ -600,7 +600,7 @@ const PaymentComponent = () => {
                                 {getStatusIcon(txn.status)}
                                 <span className="text-sm capitalize">
                                   {txn.status === "initiated"
-                                    ? "Pending"
+                                    ? "Processing via PayVault.ai engine."
                                     : txn.status === "verfied"
                                     ? "Processing"
                                     : txn.status}
