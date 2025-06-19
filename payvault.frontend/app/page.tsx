@@ -1,9 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import {
-  Wifi,
   FileText,
-  Home,
   Calendar,
 } from "lucide-react";
 import Charts from "../components/ui/charts";
@@ -13,6 +11,10 @@ import { Transaction } from "@/components/ui/table/Recent_Transactions";
 import { useEffect } from "react";
 import {Bill} from "../app/dashboard/bills/page"
 import toast from "react-hot-toast";
+import { useDashboardData } from "@/utils/useDashboardData";
+import { createPaymentStatusChartData, createVendorSpendingChartData } from "@/utils/getChartConstructor";
+import { createCategorySpendingChartData } from "@/utils/getChartConstructor";
+import { LoaderCircle } from "lucide-react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,6 +30,7 @@ import {
 import Metrics from "../components/ui/metrics";
 import { getTypeIcon } from "@/utils/getTypeIcon";
 import Link from "next/link";
+import { createMonthlyExpenditureChartData } from "@/utils/getChartConstructor";
 
 ChartJS.register(
   CategoryScale,
@@ -41,107 +44,15 @@ ChartJS.register(
   Legend
 );
 
-// Dummy Data
-const vendors = [
-  "Swiggy",
-  "BSNL",
-  "Jio",
-  "Amazon",
-  "Zomato",
-  "Uber",
-  "Netflix",
-  "Spotify",
-];
-const categories = [
-  "Food",
-  "Bills",
-  "Shopping",
-  "Transport",
-  "Entertainment",
-  "Health",
-  "Education",
-  "Others",
-];
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
-
-const vendorSpendingData = {
-  labels: vendors,
-  datasets: [
-    {
-      label: "Amount Spent (₹)",
-      data: [4500, 1200, 800, 6500, 3200, 1800, 799, 299],
-      backgroundColor: [
-        "#FF6B6B",
-        "#4D96FF",
-        "#6BCB77",
-        "#FFD93D",
-        "#FF9F45",
-        "#845EC2",
-        "#FF6B6B",
-        "#4D96FF",
-      ],
-    },
-  ],
-};
-const categorySpendingData = {
-  labels: categories,
-  datasets: [
-    {
-      label: "Amount Spent (₹)",
-      data: [5500, 3200, 4800, 2100, 1500, 1200, 800, 500],
-      backgroundColor: [
-        "#FF6B6B",
-        "#4D96FF",
-        "#6BCB77",
-        "#FFD93D",
-        "#845EC2",
-        "#FF9F45",
-        "#4D96FF",
-        "#6BCB77",
-      ],
-    },
-  ],
-};
-const paymentStatusData = {
-  labels: ["Success", "Failed", "Pending", "Refunded"],
-  datasets: [
-    {
-      data: [85, 5, 7, 3],
-      backgroundColor: ["#6BCB77", "#FF6B6B", "#FFD93D", "#4D96FF"],
-    },
-  ],
-};
-
-const monthlyExpenditureData = {
-  labels: months,
-  datasets: [
-    {
-      label: "Expenditure (₹)",
-      data: [18000, 20000, 22000, 24000, 23000, 21000],
-      backgroundColor: [
-        "rgba(255, 107, 107, 0.8)",
-        "rgba(255, 107, 107, 0.8)",
-        "rgba(255, 107, 107, 0.8)",
-        "rgba(255, 107, 107, 0.8)",
-        "rgba(255, 107, 107, 0.8)",
-        "rgba(255, 107, 107, 0.8)",
-      ],
-      borderColor: [
-        "rgba(255, 107, 107, 1)",
-        "rgba(255, 107, 107, 1)",
-        "rgba(255, 107, 107, 1)",
-        "rgba(255, 107, 107, 1)",
-        "rgba(255, 107, 107, 1)",
-        "rgba(255, 107, 107, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
-
 export default function Dashboard() {
   const [recentTransactions,setRecentTransactions] = useState<Transaction[]>([])
   const [upcomingBills,setRecentBills] = useState<Bill[]>([])
+  const { dashboardData, loading} = useDashboardData();
+  
+  const monthlyExpenditureData = createMonthlyExpenditureChartData(dashboardData?.monthlyExpenditure ?? [])
+  const vendorSpendingData = createVendorSpendingChartData(dashboardData?.vendorWithCount ?? [])
+  const categorySpendingData = createCategorySpendingChartData(dashboardData?.categoryWithCount?? [])
+  const paymentStatusData = createPaymentStatusChartData(dashboardData?.paymentStatusCount ?? [])
 
     const fetchRecentTransactions = async (): Promise<Transaction[]> => {
     try {
@@ -189,6 +100,15 @@ export default function Dashboard() {
   
       loadRecentTransactions();
     }, []);
+
+    if (loading) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[200px] text-gray-600">
+            <LoaderCircle className="animate-spin h-8 w-8 text-blue-600 mb-2" />
+            <p className="text-sm font-medium">Loading Dashboard data...</p>
+          </div>
+        );
+      }
 
   return (
     <div className="p-6 min-h-screen">

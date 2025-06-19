@@ -2,7 +2,7 @@ import React from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import { BarChart4, Shield, ShoppingBag, PieChart } from "lucide-react";
 
-type monthlyExpenditureDataType = {
+export type monthlyExpenditureDataType = {
     labels: string[];
     datasets: {
         label: string;
@@ -11,7 +11,7 @@ type monthlyExpenditureDataType = {
     }[];
     };
 
-type paymentStatusDataType = {  
+export type paymentStatusDataType = {  
     labels: string[];
     datasets: {
         data: number[];
@@ -19,7 +19,7 @@ type paymentStatusDataType = {
     }[];
 };
 
-type vendorSpendingDataType = {
+export type vendorSpendingDataType = {
     labels: string[];
     datasets: {
         label: string;
@@ -28,7 +28,7 @@ type vendorSpendingDataType = {
     }[];
 };
 
-type categorySpendingDataType = {
+export type categorySpendingDataType = {
     labels: string[];
     datasets: {
         data: number[];
