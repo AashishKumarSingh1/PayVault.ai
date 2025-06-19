@@ -7,6 +7,7 @@ import cors from "cors"
 import paymentRoute from "./src/routes/paymentRoute";
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
+import dashboardRoute from "./src/routes/dashboardRoute"
 dotenv.config();
 
 const app = express();
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 app.use("/bills",billRoute);
 app.use("/transactions",transactionRoute);
 app.use("/payments",paymentRoute)
+app.use("/dashboard",dashboardRoute)
 
 app.listen(PORT,async ()=>{
   await connectDb();
