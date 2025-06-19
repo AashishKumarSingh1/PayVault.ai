@@ -21,7 +21,7 @@ const sidebarItems = [
 
 function Sidebar() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
+  const [active,setActive] = useState("Dashboard");
   return (
     <aside
       className={`bg-white shadow-md transition-all duration-300 ease-in-out ${
@@ -75,16 +75,17 @@ function Sidebar() {
       <nav className="p-4">
         <ul className="space-y-2">
           {sidebarItems.map((item) => (
-            <li key={item.name}>
+            <li key={item.name} className={`${item.name === active ? "bg-blue-700 text-white rounded-lg font-semibold" :""}`}>
               <Link
                 href={`${item.name == "Dashboard" ? "/":`/dashboard${item.path}`}`}
                 className={`flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors ${
                   sidebarCollapsed ? "justify-center" : ""
                 }`}
+                onClick={()=>setActive(item.name)}
               >
-                <item.icon className="w-5 h-5 text-gray-600" />
+                <item.icon className={`w-5 h-5 ${item.name === active?"text-white":"text-gray-600"}`} />
                 {!sidebarCollapsed && (
-                  <span className="ml-3 text-gray-700">{item.name}</span>
+                  <span className={`ml-3 ${item.name === active?"text-white":"text-gray-700"}`}>{item.name}</span>
                 )}
               </Link>
             </li>
