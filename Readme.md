@@ -3,9 +3,26 @@
 
 ---
 
+## 📚 Table of Contents
+- [Problem Statement](#-problem-statement)
+- [Our Solution](#-our-solution-payvaultai)
+- [Feature Breakdown](#-feature-breakdown)
+- [How It Works](#-how-it-works)
+- [Why PayVault.ai Matters](#-why-payvaultai-matters)
+- [Live Link](#-live-link)
+- [Tech Stack](#-tech-stack)
+- [Folder Structure](#️-project-folder-structure)
+- [Set Up Instruction](#-setup-instructions)
+- [Contributing](#contributing)
+- [Future Enhancements](#future-enhancements)
+- [In Short](#in-short)
+- [Contributors](#contributors)
+---
+
+
 ## 📌 Problem Statement
 
-In today’s world, individuals and businesses face chaos managing their **payments, invoices, EMIs, and taxes** across multiple platforms - banks, apps, emails, SMS, and documents. Payment failures due to internet issues, lack of centralized tracking, and missing reminders further complicate financial control.
+In today’s fast-paced digital economy, individuals and businesses face chaos managing their **payments, invoices, EMIs, and taxes** scattered across various platforms - from banking apps and email inboxes to SMS and PDFs. Connectivity issues, missed reminders, and fragmented workflows lead to payment failures, financial mismanagement, and late fees.
 
 ---
 
@@ -144,7 +161,7 @@ Here's a step-by-step flow of how **PayVault.ai** operates behind the scenes:
 
 ## 🔗 Live Link
 
-[ updating soon ]
+[PayVault.ai](https://payvaultai.vercel.app/)
 
 ---
 
@@ -188,13 +205,13 @@ payvault.ai/
 │   │   │   │   │   └── page.tsx
 │   │   │   │   ├── past-transactions/       # View historical transactions
 │   │   │   │   │   └── page.tsx
-│   │   │   │   ├── insights/                # AI document understanding
+│   │   │   │   ├── analyze-bills/            # AI document understanding
 │   │   │   │   │   └── page.tsx
 │   │   │   │   ├── bills/                   # Uploaded bills management
 │   │   │   │   │   ├── page.tsx             # List all bills
 │   │   │   │   │   └── [id]/                # View specific bill detail
 │   │   │   │   │       └── page.tsx
-│   │   │   │   ├── expiring-bills/         # Track upcoming due payments
+│   │   │   │   ├── upcoming-bills/         # Track upcoming due payments
 │   │   │   │   │   └── page.tsx
 │   │   │   │   ├── notifications/          # Bill alerts & reminders
 │   │   │   │   │   └── page.tsx
@@ -204,15 +221,12 @@ payvault.ai/
 │   │   ├── ui/                            
 │   │   ├── layout/                       
 │   │   └── charts/                      
-│   ├── utils/                              
-│   ├── services/                          
-│   └── types/                             
+│   ├── utils/                                                       
 │
-├── .env.local                             
-├── middleware.ts                          
+├── .env                                                  
 ├── next.config.js                          
 ├── tailwind.config.ts                     
-└── tsconfig.json                         
+└── tsconfig.json          
 
 ├── payvault.backend/
 │   ├── src/
@@ -226,29 +240,44 @@ payvault.ai/
 │   ├── tsconfig.json
 │   └── server.ts
 
-├── payvault.genai/
+├── payvault.flask/
 │   ├── app/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   └── utils/
 │   ├── requirements.txt
-│   ├── app.py
+│   ├── main.py
 │   └── .env
-
-├── docker/
-│   ├── frontend.Dockerfile 
-│   ├── backend.Dockerfile
-│   ├── genai.Dockerfile
-│   └── docker-compose.yml
-
 ├── README.md
 
 ```
 
 ## 🔧 Setup Instructions
-[ updating soon ]
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/yourusername/payvault.ai.git
+   cd payvault.ai
+   ```
+2. **Build and Run the Docker Containers**
+  ```bash
+  docker-compose-up --build
+  ```
 
-### 🧠 In Short
+3. **Open the Application in your Browser**
+    Visit: [http:localhost:3000](http:localhost:3000)
+
+## Contributing
+We welcome contributors! To contribute:
+1. Fork this repository
+2. Create a new branch(```bash git checkout -b feature/your-feature ```)
+3. Make your changes
+4. Push your branch(```bash git push origin feature/your-feature ```)
+5. Create a pull request
+
+##  Future Enhancements
+- Biometric/2FA login integration
+- Mobile App version (React Native or Flutter)
+- WhatsApp & Telegram bot notifications
+- More API integrations (bank sync, tax filing APIs)
+
+### In Short
 
 PayVault.ai isn't just a payment tracker - it’s a **smart digital assistant** that understands your financial flow, works when the internet doesn't, and automates repetitive financial tasks. It ensures that:
 - You stay on top of **bills, invoices, and payments**
@@ -256,3 +285,9 @@ PayVault.ai isn't just a payment tracker - it’s a **smart digital assistant** 
 - Your **documents, reminders, and reports** are all in one place
 
 This is financial management for the real world - **resilient, intelligent, and automated.**
+
+## Contributors
+
+<a href = "https://github.com/AashishKumarSingh1/PayVault.ai/graphs/contributors">
+<img src = "https://contrib.rocks/image?repo=AashishKumarSingh1/PayVault.ai"/>
+</a>
