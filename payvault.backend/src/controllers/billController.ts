@@ -15,6 +15,10 @@ class BillController {
       const limit = parseInt(req.query.limit as string) || 5;
 
       const bills = await Bill.aggregate([
+        {$match: {
+            status: { $in: ["pending", "overdue"] }
+          }
+        },
         { $sort: { createdAt: -1 } },
         { $limit: limit },
         {
@@ -43,7 +47,7 @@ class BillController {
             vendor: "$vendor.name",
             amount: 1,
             dueDate: 1,
-            status: "pending",
+            status: "$status",
           },
         },
       ]);

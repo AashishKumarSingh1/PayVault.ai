@@ -45,18 +45,20 @@ function Metrics() {
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <div className="flex justify-between items-center">
           <div>
-            <p className="text-sm text-gray-500">Total Transactions</p>
+            <p className="text-sm text-gray-500">Number of Payments</p>
             <h2 className="text-2xl font-bold mt-1">{overview.payments.total}</h2>
             <p className="text-xs flex items-center gap-1 mt-1">
-              <span className="text-yellow-500">{overview.payments.pending} pending sync</span>
+              <span className="text-yellow-500">{overview.payments.pending} pending </span>
               <span className="text-gray-400">•</span>
-              <span className="text-green-500">{overview.payments.successful} Successfull Payment</span>
+              <span className="text-green-500">{overview.payments.successful} successfull</span>
+              <span className="text-gray-400">•</span>
+              <span className="text-red-500">{overview.payments.total - overview.payments.pending - overview.payments.successful} failed</span>
               {/* <span className="text-gray-400">•</span> */}
               {/* <span className="text-green-500">{overview.payments.successful}</span> */}
             </p>
           </div>
           <div className="p-3 bg-orange-50 rounded-lg">
-            <Wifi className="w-6 h-6 text-orange-600" />
+            <Shield className="w-6 h-6 text-purple-600" />
           </div>
         </div>
       </div>
@@ -68,7 +70,7 @@ function Metrics() {
             <p className="text-sm text-gray-500">Bill Status</p>
             <div className="flex gap-4 mt-2">
               <div>
-                <p className="text-xs text-gray-500">Success</p>
+                <p className="text-xs text-gray-500">Paid</p>
                 <p className="text-lg font-bold text-green-600">{overview.bills.paid}</p>
               </div>
               <div>
@@ -78,7 +80,7 @@ function Metrics() {
             </div>
           </div>
           <div className="p-3 bg-purple-50 rounded-lg">
-            <Shield className="w-6 h-6 text-purple-600" />
+            <Wifi className="w-6 h-6 text-orange-600" />
           </div>
         </div>
       </div>
@@ -86,7 +88,7 @@ function Metrics() {
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <div className="flex justify-between items-center">
           <div>
-            <p className="text-sm text-gray-500">Total Vendors Handled</p>
+            <p className="text-sm text-gray-500">Active Vendors</p>
             <h2 className="text-2xl font-bold mt-1">{overview.vendors}</h2>
             <p className="text-xs text-gray-500 mt-1">
               Vendors Handled
@@ -102,7 +104,7 @@ function Metrics() {
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
         <div className="flex justify-between items-center">
           <div>
-            <p className="text-sm text-gray-500">Payment Categories</p>
+            <p className="text-sm text-gray-500">Total Bill Categories</p>
             <h2 className="text-2xl font-bold mt-1">{overview.categories}</h2>
             <p className="text-xs text-gray-500 mt-1">
               Custom categories available

@@ -78,7 +78,7 @@ function Sidebar() {
             <li key={item.name} className={`${item.name === active ? "bg-blue-700 text-white rounded-lg font-semibold" :""}`}>
               <Link
                 href={`${item.name == "Dashboard" ? "/":`/dashboard${item.path}`}`}
-                className={`flex items-center p-3 rounded-lg hover:bg-gray-100 transition-colors ${
+                className={`flex items-center p-3 rounded-lg ${item.name === active?"hover:bg-blue-600":"hover:bg-gray-100"} transition-colors ${
                   sidebarCollapsed ? "justify-center" : ""
                 }`}
                 onClick={()=>setActive(item.name)}

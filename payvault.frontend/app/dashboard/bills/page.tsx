@@ -14,6 +14,7 @@ import {
   Droplets,
   Zap,
   X,
+  LoaderCircle,
 } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -49,6 +50,7 @@ const BillSyncComponent = () => {
   const [showGmailModal, setShowGmailModal] = useState(false);
   const [extractedBills, setExtractedBills] = useState<ExtractedBill[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [loading,setLoading] = useState(false)
   // const [file, setFile] = useState<File | null>(null);
 
   const fetchRecentBills = async () => {
@@ -69,6 +71,7 @@ const BillSyncComponent = () => {
 
   const handleManualSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true)
     if (
       !manualBill.category ||
       !manualBill.vendor ||
@@ -113,6 +116,9 @@ const BillSyncComponent = () => {
         console.error("Error adding bill:", error);
         const message = error?.response?.data?.message || "Failed to add bill";
         toast.error(message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -600,8 +606,9 @@ const BillSyncComponent = () => {
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                disabled={loading}
               >
-                Add Bill
+                {loading ?<LoaderCircle className="animate-spin h-8 w-8 text-white" />: "Add Bill"}
               </button>
             </div>
           </form>

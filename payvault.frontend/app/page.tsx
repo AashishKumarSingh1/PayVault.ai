@@ -122,7 +122,11 @@ export default function Dashboard() {
         <div className="flex items-center gap-4">
           <div className="p-2 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center gap-2">
             <Calendar className="w-4 h-4 text-gray-600" />
-            <span className="text-sm text-gray-600">May 2024</span>
+            <span className="text-sm text-gray-600">{new Date().toLocaleString("en-GB", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            })}</span>
           </div>
         </div>
       </div>
@@ -171,7 +175,8 @@ export default function Dashboard() {
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-red-50 rounded-full">{getTypeIcon(bill.category)}</div>
                   <div>
-                    <p className="text-sm font-medium">{bill.category}</p>
+                    <p className="text-sm font-medium">Bill Number : {bill.billNumber}</p>
+                    <p className="text-sm font-light">Category : {bill.category}</p>
                     <p className="text-xs text-gray-500">Due {(new Date(bill.dueDate.split("T")[0])).toLocaleDateString(
                       'en-GB', {
                       day: '2-digit',

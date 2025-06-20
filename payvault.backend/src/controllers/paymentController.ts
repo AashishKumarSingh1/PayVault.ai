@@ -22,7 +22,7 @@ class PaymentController {
   ): Promise<void> {
     try {
       connectDb();
-      const limit = parseInt(req.query.limit as string) || 7;
+      const limit = parseInt(req.query.limit as string) || 11;
 
       const payments = await Payment.aggregate([
         { $sort: { createdAt: -1 } },
@@ -109,7 +109,6 @@ class PaymentController {
       };
 
       let bill = await Bill.findOne({ billNumber: billNumber });
-      console.log(billNumber, "is bill number", bill);
       if (!bill) {
         let category = await BillCategory.findOneAndUpdate(
           { name: categoryName },
@@ -130,11 +129,9 @@ class PaymentController {
           billNumber,
           status: "pending",
         });
-      } else {
-        bill.status = "pending";
-        await bill.save();
       }
-
+      
+      if (bill.status === "pending"){
       const order = await razorpay.orders.create(options);
 
       let payment = await Payment.findOne({ bill: bill._id });
@@ -161,6 +158,15 @@ class PaymentController {
         amount: order.amount,
         currency: order.currency,
       });
+      return 
+      }
+
+      res.status(201).json({
+      success: false,
+      message: "Payment has already been made for this bill",
+     });
+     return
+
     } catch (error) {
       console.error("An error occurred: ", error);
       res.status(500).json({
