@@ -1,0 +1,42 @@
+services:
+  frontend:
+    build:
+      context: ./payvault.frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - express
+      - flask
+    networks:
+      - app-network
+
+  express:
+    build:
+      context: ./payvault.backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - flask
+    networks:
+      - app-network
+
+  flask:
+    build:
+      context: ./payvault.flask
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: development
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
