@@ -252,7 +252,7 @@ payvault.ai/
 ## 🔧 Setup Instructions
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/payvault.ai.git
+   git clone https://github.com/AashishKumarSingh1/PayVault.ai.git
    cd payvault.ai
    ```
 2. **Build and Run the Docker Containers**
